@@ -1,22 +1,24 @@
 
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   
-  <title>about | Jack&#39;s Blog</title>
+  <title>Linux/Unix ulimit命令详解 | Jack&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="maxomnis | python |java |php |mysql |大数据">
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://maxomnis.com/about/index.html">
+  <meta name="description" content="Linux对于每个用户，系统限制其最大进程数。为提高性能，可以根据设备资源情况，设置各linux 用户的最大进程数可以用ulimit -a 来显示当前的各种用户进程限制。
+下面我把某linux用户的最大进程数设为10000个：ulimit -u 10000对于需要做许多 socket 连接并使它们处于打开状态的 Java 应用程序而言，最好通过使用 ulimit -n xx 修改每个进程可打开的文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux/Unix ulimit命令详解">
+<meta property="og:url" content="http://maxomnis.com/2015/09/19/Linux-Unix-ulimit命令详解/index.html">
 <meta property="og:site_name" content="Jack's Blog">
-<meta property="og:description" content="maxomnis | python |java |php |mysql |大数据">
-<meta property="og:updated_time" content="2015-09-19T00:53:12.000Z">
+<meta property="og:description" content="Linux对于每个用户，系统限制其最大进程数。为提高性能，可以根据设备资源情况，设置各linux 用户的最大进程数可以用ulimit -a 来显示当前的各种用户进程限制。
+下面我把某linux用户的最大进程数设为10000个：ulimit -u 10000对于需要做许多 socket 连接并使它们处于打开状态的 Java 应用程序而言，最好通过使用 ulimit -n xx 修改每个进程可打开的文">
+<meta property="og:updated_time" content="2015-09-19T04:46:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
-<meta name="twitter:description" content="maxomnis | python |java |php |mysql |大数据">
+<meta name="twitter:title" content="Linux/Unix ulimit命令详解">
+<meta name="twitter:description" content="Linux对于每个用户，系统限制其最大进程数。为提高性能，可以根据设备资源情况，设置各linux 用户的最大进程数可以用ulimit -a 来显示当前的各种用户进程限制。
+下面我把某linux用户的最大进程数设为10000个：ulimit -u 10000对于需要做许多 socket 连接并使它们处于打开状态的 Java 应用程序而言，最好通过使用 ulimit -n xx 修改每个进程可打开的文">
   
     <link rel="alternative" href="/atom.xml" title="Jack&#39;s Blog" type="application/atom+xml">
   
@@ -78,12 +80,16 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-Linux-Unix-ulimit命令详解" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/about/index.html" class="article-date">
-  <time datetime="2015-09-19T00:53:12.000Z" itemprop="datePublished">2015-09-19</time>
+    <a href="/2015/09/19/Linux-Unix-ulimit命令详解/" class="article-date">
+  <time datetime="2015-09-19T04:41:31.000Z" itemprop="datePublished">2015-09-19</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/linux/">linux</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -92,7 +98,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      about
+      Linux/Unix ulimit命令详解
     </h1>
   
 
@@ -100,29 +106,60 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>Linux对于每个用户，系统限制其最大进程数。为提高性能，可以根据设备资源情况，设置各linux 用户的最大进程数<br>可以用ulimit -a 来显示当前的各种用户进程限制。</p>
+<p>下面我把某linux用户的最大进程数设为10000个：<br>ulimit -u 10000<br>对于需要做许多 socket 连接并使它们处于打开状态的 Java 应用程序而言，<br>最好通过使用 ulimit -n xx 修改每个进程可打开的文件数，缺省值是 1024。<br>ulimit -n 4096 将每个进程可以打开的文件数目加大到4096，缺省为1024<br>其他建议设置成无限制（unlimited）的一些重要设置是：<br>数据段长度：ulimit -d unlimited<br>最大内存大小：ulimit -m unlimited<br>堆栈大小：ulimit -s unlimited<br>CPU 时间：ulimit -t unlimited<br>虚拟内存：ulimit -v unlimited</p>
+<p>暂时地，适用于通过 ulimit 命令登录 shell 会话期间。<br>永久地，通过将一个相应的 ulimit 语句添加到由登录 shell 读取的文件中， 即特定于 shell 的用户资源文件，如：<br>1)、解除 Linux 系统的最大进程数和最大文件打开数限制：<br>vi /etc/security/limits.conf</p>
+<h1 id="添加如下的行">添加如下的行</h1><ul>
+<li>soft noproc 11000</li>
+<li>hard noproc 11000</li>
+<li>soft nofile 4100</li>
+<li>hard nofile 4100<br>说明：<em> 代表针对所有用户，noproc 是代表最大进程数，nofile 是代表最大文件打开数<br>2)、让 SSH 接受 Login 程式的登入，方便在 ssh 客户端查看 ulimit -a 资源限制：<br>a、vi /etc/ssh/sshd_config<br>把 UserLogin 的值改为 yes，并把 # 注释去掉<br>b、重启 sshd 服务：<br>/etc/init.d/sshd restart<br>3)、修改所有 linux 用户的环境变量文件：<br>vi /etc/profile<br>ulimit -u 10000<br>ulimit -n 4096<br>ulimit -d unlimited<br>ulimit -m unlimited<br>ulimit -s unlimited<br>ulimit -t unlimited<br>ulimit -v unlimited<br>保存后运行#source /etc/profile 使其生效<br>/<strong><strong><strong><strong><strong><strong><strong><strong><strong>*</strong></strong></strong></strong></strong></strong></strong></strong></strong></em><br>有时候在程序里面需要打开多个文件，进行分析，系统一般默认数量是1024，（用ulimit -a可以看到）对于正常使用是够了，但是对于程序来讲，就太少了。</li>
+</ul>
+<p>修改2个文件。</p>
+<p>1./etc/security/limits.conf<br>vi /etc/security/limits.conf<br>加上：</p>
+<ul>
+<li>soft nofile 8192</li>
+<li>hard nofile 20480</li>
+</ul>
+<p>2./etc/pam.d/login<br>session required /lib/security/pam_limits.so<br>/<strong><strong>**</strong></strong><br>另外确保/etc/pam.d/system-auth文件有下面内容<br>session required /lib/security/$ISA/pam_limits.so<br>这一行确保系统会执行这个限制。</p>
+<p>/<strong><strong><em>*</em></strong></strong></p>
+<p>3.一般用户的.bash_profile</p>
+<p>#ulimit -n 1024<br>重新登陆ok</p>
+
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://maxomnis.com/about/index.html" data-id="cieqlp1vv00029i7ejmp1mzua" class="article-share-link" data-share="baidu" data-title="about">分享到</a>
+        <a data-url="http://maxomnis.com/2015/09/19/Linux-Unix-ulimit命令详解/" data-id="cieqlp3bw000b9i7ejp7fir77" class="article-share-link" data-share="baidu" data-title="Linux/Unix ulimit命令详解">分享到</a>
       
 
       
-        <a href="http://maxomnis.com/about/index.html#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://maxomnis.com/2015/09/19/Linux-Unix-ulimit命令详解/#ds-thread" class="article-comment-link">评论</a>
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
+
     </footer>
   </div>
   
     
+<nav id="article-nav">
+  
+  
+    <a href="/2015/09/19/Python-判断变量的数据类型/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">Python 判断变量的数据类型</div>
+    </a>
+  
+</nav>
+
   
 </article>
 
 
   <section id="comments">
-    <div id="ds-thread" class="ds-thread" data-thread-key="about/index.html" data-title="about" data-url="http://maxomnis.com/about/index.html"></div>
+    <div id="ds-thread" class="ds-thread" data-thread-key="2015/09/19/Linux-Unix-ulimit命令详解/" data-title="Linux/Unix ulimit命令详解" data-url="http://maxomnis.com/2015/09/19/Linux-Unix-ulimit命令详解/"></div>
   </section>
 </section>
       
@@ -293,6 +330,5 @@ var duoshuoQuery = {short_name:"maxomnis2015"};
 </div>
 </body>
 </html>
-
 
 
